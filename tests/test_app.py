@@ -24,14 +24,14 @@ def test_signup_and_unregister():
     email = f"test+{uuid.uuid4().hex[:8]}@example.com"
 
     # Sign up
-    r = client.post(f"/activities/{activity}/signup?email={email}")
+    r = client.post(f"/activities/{activity}/signup", params={"email": email})
     assert r.status_code == 200
     # Participant should appear in activity
     activities = client.get("/activities").json()
     assert email in activities[activity]["participants"]
 
     # Unregister
-    r2 = client.post(f"/activities/{activity}/unregister?email={email}")
+    r2 = client.post(f"/activities/{activity}/unregister", params={"email": email})
     assert r2.status_code == 200
     activities = client.get("/activities").json()
     assert email not in activities[activity]["participants"]
